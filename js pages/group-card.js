@@ -25,14 +25,20 @@ async function getInfoGroup(id) {
   return data;
 }
 
-
+// Get the result from session storage
+const savedResultGroup = sessionStorage.getItem('groupResult');
+if (savedResultGroup) {
+  const result = JSON.parse(savedResultGroup);
+  // Use the result to update the UI
+  showGroup(result.id)
+}
 
 
 async function showGroup(id) {
   const students = await getInfoGroup(id);
   const tableBody = document.querySelector('.tbody2');
 
-  // Remove all existing rows from the table
+  // // Remove all existing rows from the table
   // while (tableBody.firstChild) {
   //   tableBody.removeChild(tableBody.firstChild);
   // }
@@ -62,7 +68,7 @@ async function showGroup(id) {
         moduleCell.textContent = student[`g${i} module`];
         groupCell.textContent = student[`g${i}`];
         dateCell.textContent = formattedDate;
-        // tableBody.appendChild(newRow);
+        tableBody.appendChild(newRow);
         moduleCount++;
         if (student[`g${i} grade`]) {
           totalDoneModules++;
@@ -89,25 +95,16 @@ async function showGroup(id) {
   } else {
     footer4.textContent = 'No upcoming Module';
   }
-  let moduleUrl = `Group.html?id=${id}`;
-  seeMore4.href = moduleUrl;
-  let module = await fetch(moduleUrl);
-  let moduleData = await module.json();
-  localStorage.setItem('moduleData', JSON.stringify(moduleData));
-  window.open(moduleUrl);
+
+  // Save the result in session storage
+  const groupResult = { totalDoneModules, moduleCount, id };
+  sessionStorage.setItem('groupResult', JSON.stringify(groupResult));
+
 }
 
-// const page = document.querySelector('body');
-
-
-// page.addEventListener('click', (event) => {
-//     if (event.target !== searchInput) {
-//         const tableBody = document.querySelector('.divTableBody');
-//         tableBody.innerHTML = ""; // حذف جميع الصفوف في الجدول
-//     }
-// });
 
 searchButton.addEventListener('click', () => {
   const id = searchInput[0].value;
   showGroup(id);
 });
+
