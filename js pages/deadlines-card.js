@@ -64,7 +64,7 @@ async function showDeadlines(value) {
 
   students.forEach(element => {
     if (value == element.ID) {
-      let student = { DueDate: element[`Due Date`], Amount: element.Amount, Status: element.Status }
+      let student = { DueDate: element[`Due Date`], Amount: element.Amount, Status: element.Status, value: element.ID }
       console.log(student);
       const newRow = document.createElement('tr');
       const DueDateCell = document.createElement('td');
