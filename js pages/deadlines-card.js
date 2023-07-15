@@ -11,24 +11,25 @@
 // var pic = document.getElementById("profile-pic")
 // var headName = document.querySelector('.headName') 
 
-const seeMore3 = document.querySelector('.seeMore3')
 
 
+
+const seeMore3 = document.querySelector('.seeMore3');
 
 async function getInfoDeadlines() {
   const url = `https://script.googleusercontent.com/macros/echo?user_content_key=0R8d1iqm90C-GGTz99LLcABq6JENQdCw-rur0yb31njY0Wc0L5n0bzMAIKEfTYonYZRQLHNd2lFhE3ySk3SBTral3hsVvRwZm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnLvWzkbjjR_fgiUtTLMvhDvPsd6Ah7bMHYDZ2SfFYsGe49N88IBzLFHYettXQhUz1lKKK7_QllFkpCW2Mbqx36uCwy8sBRNeetz9Jw9Md8uu&lib=MQfVKFgVXIr2Rm9shkxeT9DVOmtUjdkhJ`;
   response = await fetch(url);
   data = await response.json();
-  // console.log(data[0].Name);
   return data;
 }
 
-const savedDataDead = sessionStorage.getItem('myDataDead');
-if (savedDataDead) {
-  const data = JSON.parse(savedDataDead);
-  showDeadlines(data.value);
+// Get the result from session storage
+const savedResultDead = sessionStorage.getItem('deadResult');
+if (savedResultDead) {
+  const result = JSON.parse(savedResultDead);
+  // Use the result to update the UI
+  showDeadlines(result.value);
 }
-
 
 async function showDeadlines(value) {
   var students = await getInfoDeadlines();
@@ -52,15 +53,12 @@ async function showDeadlines(value) {
     footer3.textContent = `Next deadline: ${formattedDueDate}`;
   }
 
-
   let deadlineUrl = `Deadlines.html?id=${value}`;
   seeMore3.href = deadlineUrl;
   let deadline = await fetch(deadlineUrl);
   let deadlineData = await deadline.json();
   localStorage.setItem('deadlineData', JSON.stringify(deadlineData));
   window.open = deadlineUrl;
-
-  // Save the result in session storage  
 
   students.forEach(element => {
     if (value == element.ID) {
@@ -86,16 +84,18 @@ async function showDeadlines(value) {
         img.style.width = "7%";
       }
       StatusCell.appendChild(img);
-      sessionStorage.setItem('myDataDead', JSON.stringify(student));
     }
   });
 
-  searchButton.addEventListener('click', () => {
-    const value = searchInput[0].value;
-    showDeadlines(value);
-  });
+  // Save the result in session storage  
+  const deadResult = { deadlineCount , numberOfPaidDeadlines , value };
+  sessionStorage.setItem('deadResult', JSON.stringify(deadResult));
 }
 
+searchButton.addEventListener('click', () => {
+  const value = searchInput[0].value;
+  showDeadlines(value);
+});
 
 
 

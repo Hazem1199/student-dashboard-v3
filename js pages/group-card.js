@@ -38,7 +38,7 @@ async function showGroup(id) {
   const students = await getInfoGroup(id);
   const tableBody = document.querySelector('.tbody2');
 
-  // // Remove all existing rows from the table
+  // Remove all existing rows from the table
   // while (tableBody.firstChild) {
   //   tableBody.removeChild(tableBody.firstChild);
   // }
@@ -68,14 +68,19 @@ async function showGroup(id) {
         moduleCell.textContent = student[`g${i} module`];
         groupCell.textContent = student[`g${i}`];
         dateCell.textContent = formattedDate;
-        tableBody.appendChild(newRow);
-        moduleCount++;
+        if (tableBody) {
+          tableBody.appendChild(newRow);
+        } moduleCount++;
         if (student[`g${i} grade`]) {
           totalDoneModules++;
         }
       }
     });
   }
+
+  // Save the result in session storage
+  const gResult = { totalDoneModules, moduleCount, id };
+  sessionStorage.setItem('groupResult', JSON.stringify(gResult));
   // Hide spinner element
   // document.body.removeChild(spinner);
 
@@ -95,10 +100,14 @@ async function showGroup(id) {
   } else {
     footer4.textContent = 'No upcoming Module';
   }
+  let moduleUrl = `Group.html?id=${id}`;
+  seeMore4.href = moduleUrl;
+  let module = await fetch(moduleUrl);
+  let moduleData = await module.json();
+  localStorage.setItem('moduleData', JSON.stringify(moduleData));
+  window.open(moduleUrl);
 
-  // Save the result in session storage
-  const groupResult = { totalDoneModules, moduleCount, id };
-  sessionStorage.setItem('groupResult', JSON.stringify(groupResult));
+  
 
 }
 
