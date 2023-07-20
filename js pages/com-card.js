@@ -70,7 +70,7 @@ async function getInfoComplaint(id) {
 const numComplaint = document.querySelector(".num-complaint");
 const savedDatacom = sessionStorage.getItem("myDataCom");
 if (savedDatacom) {
-  const data = JSON.parse(savedDataReq);
+  const data = JSON.parse(savedDatacom);
   // Use the data to render the page
   // numRequest.innerHTML = data.totalRequest;
   showComplaint(data.ID);
