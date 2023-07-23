@@ -58,12 +58,6 @@ async function showDeadlines(value) {
     if (students.ID == value) {
       const sResult = { value };
       sessionStorage.setItem("studentsData", JSON.stringify(sResult));
-      let deadlineUrl = `Deadlines.html?id=${value}`;
-      seeMore3.href = deadlineUrl;
-      let deadline = await fetch(deadlineUrl);
-      let deadlineData = await deadline.json();
-      localStorage.setItem('deadlineData', JSON.stringify(deadlineData));
-      window.open = deadlineUrl;
     }
     const numDeadline = document.querySelector('.num-deadline');
     const footer3 = document.querySelector('.footer3');
@@ -97,9 +91,9 @@ async function showDeadlines(value) {
     students.forEach(element => {
       if (value == element.ID) {
         let student = { DueDate: element[`Due Date`], Amount: element.Amount, Status: element.Status, value: element.ID };
-        // if (students.value === undefined) {
-        //   students.value = document.querySelector('input[name="id"]').value;
-        // }
+        if (students.value === undefined) {
+          students.value = document.querySelector('input[name="id"]').value;
+        }
         student.value = value;
         console.log(student);
         const newRow = document.createElement('tr');
