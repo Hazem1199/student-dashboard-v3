@@ -8,7 +8,7 @@ function signIn() {
         "client_id": "768857244422-1b8mje373gjmjsi5hdv7kcatja1roos2.apps.googleusercontent.com",
         "redirect_uri": "http://127.0.0.1:5501/SRM.html",
         "response_type": "token",
-        "scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/youtube.readonly",
+        "scope": "https://www.googleapis.com/auth/userinfo.profile",
         "include_granted_scopes": "true",
         'state': 'pass-through-value'
     }
