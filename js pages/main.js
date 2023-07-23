@@ -120,3 +120,27 @@ window.onload = function () {
     }
   }
 };
+
+
+
+let params = {};
+let regex = /([^&=]+)=([^&]*)/g, m;
+while (m = regex.exec(location.href)){
+  params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+}
+
+if (Object.keys(params).length > 0) {
+  localStorage.setItem('authInfo', JSON.stringify(params));
+}
+
+// hide the access token 
+if (window.history && window.history.pushState) {
+  window.history.pushState({}, document.title, "/SRM.html");
+} else {
+  window.location.replace("/SRM.html");
+}
+
+let info = JSON.parse(localStorage.getItem('authInfo'));
+console.log(JSON.parse(localStorage.getItem('authInfo')));
+console.log(info['access_token']);
+console.log(info['expires_in']);
